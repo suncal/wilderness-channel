@@ -117,6 +117,13 @@
   }
   .why b { color: var(--moss-2); font-family: ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; display:block; margin-bottom:4px; }
 
+  .verdict { border:1px solid var(--ember); background: color-mix(in oklab, var(--ember) 9%, var(--surface)); border-radius:14px; padding: 24px 26px; box-shadow: var(--shadow); margin-top: 8px; }
+  .verdict .vlabel { font-family: ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color: var(--ember); font-weight:600; }
+  .verdict h3 { font-size: clamp(1.3rem,3vw,1.6rem); margin: 8px 0 14px; }
+  .verdict p { margin: 0 0 14px; }
+  .verdict p:last-child { margin-bottom: 0; }
+  .verdict .tick { color: var(--moss-2); font-weight:600; }
+
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; box-shadow: var(--shadow); }
   .grid { display: grid; gap: 16px; }
   @media (min-width: 620px) { .grid.two { grid-template-columns: 1fr 1fr; } .grid.three { grid-template-columns: repeat(3,1fr); } }
@@ -285,9 +292,12 @@
     </div>
   </div>
 
-  <div class="why">
-    <b>The verdict</b>
-    Even correcting to cheap <em>mobile</em> detailing in Mumbai, these aren't rivals — they're <strong>different tools for different jobs.</strong> Mobile detailing is a <em>cash engine</em>: reliable small money next week, low risk — but a commodity price war, a daily grind, capped by one city's traffic and labor, with the profitable ceramic/PPF work off the table. The cooking channel is an <em>asymmetric bet</em>: risks pocket change, most likely earns little, but the winning outcome is global and life-changing, and it's the <strong>only one of the two that is uncapped, leverageable, and pays you while you sleep.</strong> <strong>For your stated goal — channel-scale earnings, started cheaply — the channel is the right vehicle.</strong> Smartest combined play: run <em>mobile detailing (or existing income) as the cash engine that funds the cooking bet</em> until the channel's ad + sponsor revenue stands on its own.
+  <div class="verdict">
+    <span class="vlabel">The verdict</span>
+    <h3>Winner for this goal: the cooking channel 🔥</h3>
+    <p>Mobile detailing in Mumbai is genuinely hard, and the difficulty is structural — not a matter of effort. The profitable work (<strong>ceramic coating &amp; PPF, 50–60% margins</strong>) is <span class="crit-t">physically impossible to deliver mobile</span> — it needs a dust-free, dry bay. That leaves you selling low-ticket washes into a <strong>₹99 price war</strong> against funded incumbents (Hoora, Uncle Car Washer), through <strong>4 months of monsoon</strong> that kills demand, with volume <strong>capped by Mumbai traffic</strong> at a handful of cars a day. It's a reliable small-cash grind — not a path to channel-scale earnings.</p>
+    <p>The cooking channel is the <span class="tick">only one of the two</span> that is cheap to start (~₹5K), <span class="tick">global</span>, <span class="tick">uncapped</span>, <span class="tick">leverageable</span>, and <span class="tick">pays while you sleep</span> — which is exactly the stated goal. Its one real weakness is <em>patience</em>: expect 6–12 months before meaningful revenue, and most channels never monetize at all.</p>
+    <p><strong>Play it as: the channel is the dream — build it. Keep mobile detailing or existing income only as an optional cash engine to fund the wait, not as the main bet.</strong></p>
   </div>
 </section>
 
