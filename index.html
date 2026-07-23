@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wilderness Cooking Channel — Launch Playbook</title>
+<style>
+  html,body{margin:0;padding:0;}
+  :root {
+    --bg:        #F3EEE6;
+    --surface:   #FBF8F2;
+    --surface-2: #EDE6DA;
+    --ink:       #241F1B;
+    --muted:     #6B5F54;
+    --faint:     #8E8175;
+    --line:      #DED4C5;
+    --ember:     #C4531B;
+    --ember-2:   #E2703A;
+    --moss:      #5C6B45;
+    --moss-2:    #77895A;
+    --good:      #5C6B45;
+    --warn:      #B07A15;
+    --crit:      #A2402C;
+    --shadow:    0 1px 2px rgba(36,31,27,.06), 0 8px 28px rgba(36,31,27,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:        #17130F;
+      --surface:   #211A15;
+      --surface-2: #2A2019;
+      --ink:       #EFE7DB;
+      --muted:     #AC9C8B;
+      --faint:     #7E7060;
+      --line:      #382E26;
+      --ember:     #E8763B;
+      --ember-2:   #F0925E;
+      --moss:      #8FA271;
+      --moss-2:    #A3B586;
+      --good:      #8FA271;
+      --warn:      #D9A03E;
+      --crit:      #D96A50;
+      --shadow:    0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:#F3EEE6; --surface:#FBF8F2; --surface-2:#EDE6DA; --ink:#241F1B; --muted:#6B5F54;
+    --faint:#8E8175; --line:#DED4C5; --ember:#C4531B; --ember-2:#E2703A; --moss:#5C6B45;
+    --moss-2:#77895A; --good:#5C6B45; --warn:#B07A15; --crit:#A2402C;
+    --shadow:0 1px 2px rgba(36,31,27,.06), 0 8px 28px rgba(36,31,27,.07);
+  }
+  :root[data-theme="dark"] {
+    --bg:#17130F; --surface:#211A15; --surface-2:#2A2019; --ink:#EFE7DB; --muted:#AC9C8B;
+    --faint:#7E7060; --line:#382E26; --ember:#E8763B; --ember-2:#F0925E; --moss:#8FA271;
+    --moss-2:#A3B586; --good:#8FA271; --warn:#D9A03E; --crit:#D96A50;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; }
+
+  h1,h2,h3 { font-family: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif; font-weight: 700; text-wrap: balance; line-height: 1.12; }
+  .display { font-family: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    text-transform: uppercase; letter-spacing: .18em; font-size: .70rem;
+    color: var(--ember); font-weight: 600;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---- Hero ---- */
+  .hero {
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(120% 90% at 82% 8%, rgba(226,112,58,.20), transparent 55%),
+      radial-gradient(90% 70% at 10% 100%, rgba(92,107,69,.16), transparent 60%);
+  }
+  .hero-inner { padding: 78px 22px 60px; max-width: 860px; margin: 0 auto; }
+  .kicker-row { display:flex; align-items:center; gap:12px; margin-bottom: 26px; flex-wrap: wrap; }
+  .flame {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, var(--ember-2), var(--ember));
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--ember) 18%, transparent);
+  }
+  h1 { font-size: clamp(2.5rem, 7vw, 4.3rem); margin: 0 0 20px; letter-spacing: -0.01em; }
+  h1 em { font-style: italic; color: var(--ember); }
+  .lede { font-size: clamp(1.1rem, 2.4vw, 1.4rem); color: var(--muted); max-width: 40ch; margin: 0 0 30px; }
+  .strip { display:flex; flex-wrap:wrap; gap: 0; border:1px solid var(--line); border-radius: 14px; overflow:hidden; background: var(--surface); box-shadow: var(--shadow); }
+  .strip > div { flex: 1 1 140px; padding: 16px 18px; border-right: 1px solid var(--line); }
+  .strip > div:last-child { border-right: none; }
+  .strip .big { font-family:"Iowan Old Style",Georgia,serif; font-size: 1.7rem; font-weight:700; display:block; letter-spacing:-.01em; }
+  .strip .lbl { font-size: .72rem; color: var(--faint); text-transform: uppercase; letter-spacing:.08em; }
+
+  /* ---- Sections ---- */
+  section { padding: 52px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 6px 0 8px; }
+  .sec-intro { color: var(--muted); max-width: 62ch; margin: 0 0 28px; }
+  h3 { font-size: 1.18rem; margin: 0 0 6px; }
+  p { margin: 0 0 16px; }
+  a { color: var(--ember); }
+
+  .why {
+    border-left: 3px solid var(--moss);
+    background: color-mix(in oklab, var(--moss) 8%, var(--surface));
+    padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 20px 0;
+  }
+  .why b { color: var(--moss-2); font-family: ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; display:block; margin-bottom:4px; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; box-shadow: var(--shadow); }
+  .grid { display: grid; gap: 16px; }
+  @media (min-width: 620px) { .grid.two { grid-template-columns: 1fr 1fr; } .grid.three { grid-template-columns: repeat(3,1fr); } }
+
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  .tbl-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--surface-2); font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; color: var(--muted); font-weight:600; white-space:nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td .num, th .num { font-variant-numeric: tabular-nums; }
+  .em { color: var(--ember); font-weight:600; }
+  .crit-t { color: var(--crit); font-weight:600; }
+
+  .pill { display:inline-block; font-size:.68rem; font-weight:600; padding: 3px 9px; border-radius: 999px; letter-spacing:.03em; }
+  .pill.good { background: color-mix(in oklab, var(--good) 16%, transparent); color: var(--good); }
+  .pill.warn { background: color-mix(in oklab, var(--warn) 18%, transparent); color: var(--warn); }
+  .pill.crit { background: color-mix(in oklab, var(--crit) 16%, transparent); color: var(--crit); }
+
+  /* video list */
+  .vid { display:flex; gap:18px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .vid:last-child { border-bottom: none; }
+  .vid .no { font-family:"Iowan Old Style",Georgia,serif; font-size: 1.5rem; color: var(--ember); font-weight:700; min-width: 2ch; font-variant-numeric: tabular-nums; }
+  .vid .ttl { font-weight: 600; margin: 0 0 3px; }
+  .vid .meta { font-size:.85rem; color: var(--muted); margin:0; }
+  .vid .tag { font-size:.68rem; color: var(--moss-2); text-transform:uppercase; letter-spacing:.06em; }
+
+  /* phases */
+  .phase { display:flex; gap: 20px; padding: 4px 0 26px; position: relative; }
+  .phase:not(:last-child)::before { content:""; position:absolute; left: 15px; top: 34px; bottom: -4px; width: 2px; background: var(--line); }
+  .phase .dot { min-width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 2px solid var(--ember); color: var(--ember); display:grid; place-items:center; font-weight:700; font-size:.8rem; z-index:1; }
+  .phase .body h3 { margin-bottom: 4px; }
+  .phase .body .when { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color: var(--faint); }
+
+  ul.clean { list-style: none; padding: 0; margin: 0; }
+  ul.clean li { padding: 7px 0 7px 26px; position: relative; border-bottom: 1px solid var(--line); }
+  ul.clean li:last-child { border-bottom: none; }
+  ul.clean li::before { content: "▸"; position: absolute; left: 4px; color: var(--ember); }
+
+  .foot { padding: 40px 0 60px; color: var(--faint); font-size: .85rem; }
+  .disc { font-size: .82rem; color: var(--faint); border:1px dashed var(--line); border-radius:10px; padding: 14px 16px; margin-top: 8px; }
+  .mt0 { margin-top:0; } .mb0 { margin-bottom:0; }
+</style>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="kicker-row">
+      <span class="flame"></span>
+      <span class="eyebrow">Launch Playbook · Global Wilderness Cooking · Filmed in India</span>
+    </div>
+    <h1>Cook over <em>fire</em>. Get paid in <em>dollars</em>.</h1>
+    <p class="lede">A cinematic, near-wordless outdoor cooking channel — Indian production costs, a global audience, and a US entity that captures the USD.</p>
+    <div class="strip">
+      <div><span class="big num">5–20×</span><span class="lbl">RPM vs. local village content</span></div>
+      <div><span class="big num">&lt;₹2,500</span><span class="lbl">To film video #1</span></div>
+      <div><span class="big num">~$2–3M</span><span class="lbl">Tavakkul's est. yearly ceiling</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- STRATEGY -->
+<section>
+  <span class="eyebrow">The Thesis</span>
+  <h2>Why this specific combination wins</h2>
+  <p class="sec-intro">You already intuited the right structure. Here it is made explicit — three legs, each one covering a weakness in the others.</p>
+
+  <div class="grid three">
+    <div class="card">
+      <h3>1 · Global content</h3>
+      <p class="mb0" style="color:var(--muted);font-size:.95rem;">Cinematic, whole-animal, near-wordless cooking in dramatic nature. No language barrier → Western viewers → <span class="em">$4–15 CPM</span> instead of ₹20–40.</p>
+    </div>
+    <div class="card">
+      <h3>2 · Indian production</h3>
+      <p class="mb0" style="color:var(--muted);font-size:.95rem;">Hired crew + your partners on the ground. Fire, forest, and a river are a <span class="em">₹0 film set</span>. India's landscapes are wildly underused in this genre.</p>
+    </div>
+    <div class="card">
+      <h3>3 · US entity</h3>
+      <p class="mb0" style="color:var(--muted);font-size:.95rem;">A US LLC + AdSense captures revenue in <span class="em">USD to a US bank</span>, skips the 24% India withholding, and matches the global-audience income you're actually earning.</p>
+    </div>
+  </div>
+
+  <div class="why">
+    <b>Why it matters</b>
+    Registering the channel as "USA" does <strong>not</strong> raise your RPM — YouTube pays on <em>viewer</em> location, not channel location. The US entity is a <em>banking &amp; tax</em> decision. The <em>high RPM comes from the content targeting global viewers.</em> Both are needed; neither alone is enough.
+  </div>
+</section>
+
+<!-- MONEY MODEL -->
+<section>
+  <span class="eyebrow">The Money Model</span>
+  <h2>How the revenue actually stacks up</h2>
+  <p class="sec-intro">The whole game is views × RPM. Wilderness content wins because it lifts the RPM 5–20× over local-language village cooking. These figures are illustrative planning ranges, not promises.</p>
+
+  <div class="tbl-scroll" style="margin-bottom:22px;">
+    <table>
+      <thead><tr><th>Genre / audience</th><th>Blended RPM</th><th>1M views/mo</th><th>10M views/mo</th></tr></thead>
+      <tbody>
+        <tr><td>Local Indian village (regional lang.)</td><td class="num">₹20–40</td><td class="num">₹20–40K</td><td class="num">₹2–4L</td></tr>
+        <tr><td><span class="em">Global wilderness (this plan)</span></td><td class="num">$3–8</td><td class="num">$3–8K</td><td class="num">$30–80K</td></tr>
+        <tr><td>Reference: Tavakkul (Wilderness Cooking)</td><td class="num">—</td><td colspan="2" class="num">~$2–3.5M/yr on 1.8B lifetime views</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="why">
+    <b>The hard truth</b>
+    This is a <strong>volume game with a long fuse.</strong> Ad money only begins after 1,000 subscribers + 4,000 watch-hours, which typically takes months. The channels you admire have <em>billions</em> of lifetime views. Budget for 6–12 months of building the catalog before meaningful revenue — the upside is real, but it is not fast.
+  </div>
+
+  <h3 style="margin-top:26px;">Revenue stacks (in priority order)</h3>
+  <ul class="clean">
+    <li><strong>YouTube ad revenue</strong> — the base; scales purely with global watch time.</li>
+    <li><strong>Brand sponsors &amp; affiliates</strong> — knives, cookware, spice brands, tourism boards. Often <em>out-earns</em> ads once you pass ~500K subs.</li>
+    <li><strong>Merch</strong> — signature spice blend, branded knife/apron. Tavakkul does this.</li>
+    <li><strong>Licensing</strong> — stock/compilation channels and TV pay for cinematic food footage.</li>
+  </ul>
+</section>
+
+<!-- COMPARISON -->
+<section>
+  <span class="eyebrow">Decision · Mumbai Mobile Detailing vs Cooking Channel</span>
+  <h2>Mobile car detailing vs. this cooking channel</h2>
+  <p class="sec-intro">Corrected for reality: <strong>mobile detailing in Mumbai</strong> (not a US shop, not a fixed studio). It's cheap to start — but it's a <strong>local, commodity service business</strong>, while the cooking channel is a <strong>global media asset</strong>. Here's the honest head-to-head with Indian numbers.</p>
+
+  <div class="tbl-scroll" style="margin-bottom:24px;">
+    <table>
+      <thead><tr><th>Dimension</th><th>🧽 Mobile detailing (Mumbai)</th><th>🔥 Cooking channel</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Startup cost</strong></td><td class="num">₹50K–2L (waterless kit, van, products)</td><td class="num em">&lt;₹5K to start</td></tr>
+        <tr><td><strong>Time to first revenue</strong></td><td class="em">Week 1 — first customer pays</td><td>6–12 months (monetization gate)</td></tr>
+        <tr><td><strong>What you can sell</strong></td><td>Wash + interior only — <span class="crit-t">ceramic/PPF (the 50–60% margin work) can't be done mobile</span></td><td>Global ad + sponsor revenue on views</td></tr>
+        <tr><td><strong>Ticket &amp; volume</strong></td><td class="num">₹99–5,000/car · ~4–8 cars/day (traffic-capped)</td><td class="em">One video → millions of views</td></tr>
+        <tr><td><strong>Income — realistic</strong></td><td>Solo grind ≈ ₹30K–1L/month</td><td>Most earn ~₹0. Winners: ₹lakhs → $M</td></tr>
+        <tr><td><strong>Income — ceiling</strong></td><td class="num">City &amp; labor-capped (few lakh/mo w/ a team)</td><td class="num em">$2–3M+ (Tavakkul-tier), uncapped</td></tr>
+        <tr><td><strong>How it scales</strong></td><td>Linear — more vans, more staff, city-capped</td><td class="em">Non-linear — one viral video = millions</td></tr>
+        <tr><td><strong>Earns while you sleep?</strong></td><td>No — stops when the labor stops</td><td class="em">Yes — back-catalog earns 24/7 forever</td></tr>
+        <tr><td><strong>Market</strong></td><td>Local (Mumbai only)</td><td class="em">Global (whole planet)</td></tr>
+        <tr><td><strong>Revenue currency</strong></td><td>INR</td><td class="em">Global USD via US entity</td></tr>
+        <tr><td><strong>Competition</strong></td><td class="crit-t">Brutal — Hoora/Uncle Car Washer already at "₹99"</td><td>Crowded genre, but India wilderness is underused</td></tr>
+        <tr><td><strong>Daily commitment</strong></td><td>Daily ops — bookings, logistics, staff, every day</td><td class="em">Periodic batch shoots, not daily grind</td></tr>
+        <tr><td><strong>Risk of total failure</strong></td><td>Moderate — commodity price war squeezes margin</td><td>High — most channels never monetize</td></tr>
+        <tr><td><strong>Can you sell it later?</strong></td><td>Hard — local, commodity, low brand value</td><td class="em">Yes — brand + audience + catalog, highly sellable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid two" style="margin-bottom:22px;">
+    <div class="card">
+      <h3>🧽 Mobile detailing wins on…</h3>
+      <ul class="clean">
+        <li><strong>Certainty.</strong> You get paid this week. Low chance of earning nothing.</li>
+        <li><strong>Cheap-ish start.</strong> No studio rent — waterless kit + van, not ₹15–40L.</li>
+        <li><strong>Proven demand.</strong> Mumbai societies want doorstep washing.</li>
+      </ul>
+      <p class="mb0" style="color:var(--muted);font-size:.9rem;margin-top:10px;">But: it's a <em>commodity in a ₹99 price war</em>, capped by Mumbai traffic and labor, a <em>daily operational grind</em>, and the <em>high-margin ceramic/PPF work is impossible to deliver mobile.</em></p>
+    </div>
+    <div class="card">
+      <h3>🔥 Cooking wins on…</h3>
+      <ul class="clean">
+        <li><strong>Ceiling.</strong> The upside is 10–100× detailing, and uncapped.</li>
+        <li><strong>Leverage.</strong> One video reaches millions; content is an <em>asset</em>, not labor.</li>
+        <li><strong>Cheapest start &amp; global.</strong> ~₹5K, earns USD from the whole planet.</li>
+      </ul>
+      <p class="mb0" style="color:var(--muted);font-size:.9rem;margin-top:10px;">But: it's a <em>slow, uncertain lottery with real work</em> — most channels earn nothing, and money takes 6–12 months to appear if it ever does.</p>
+    </div>
+  </div>
+
+  <div class="why">
+    <b>The verdict</b>
+    Even correcting to cheap <em>mobile</em> detailing in Mumbai, these aren't rivals — they're <strong>different tools for different jobs.</strong> Mobile detailing is a <em>cash engine</em>: reliable small money next week, low risk — but a commodity price war, a daily grind, capped by one city's traffic and labor, with the profitable ceramic/PPF work off the table. The cooking channel is an <em>asymmetric bet</em>: risks pocket change, most likely earns little, but the winning outcome is global and life-changing, and it's the <strong>only one of the two that is uncapped, leverageable, and pays you while you sleep.</strong> <strong>For your stated goal — channel-scale earnings, started cheaply — the channel is the right vehicle.</strong> Smartest combined play: run <em>mobile detailing (or existing income) as the cash engine that funds the cooking bet</em> until the channel's ad + sponsor revenue stands on its own.
+  </div>
+</section>
+
+<!-- IDENTITY -->
+<section>
+  <span class="eyebrow">Channel Identity</span>
+  <h2>Name, look &amp; the format bible</h2>
+  <p class="sec-intro">Pick a name that reads to a viewer in Ohio or Berlin, not just India. Three directions, each with a distinct personality — I'd lead with the first.</p>
+
+  <div class="grid three" style="margin-bottom:26px;">
+    <div class="card">
+      <span class="pill good">Recommended</span>
+      <h3 style="margin-top:10px;">Himalaya Fire Kitchen</h3>
+      <p class="mb0" style="color:var(--muted);font-size:.93rem;">Instantly places you somewhere epic and un-owned in this genre. "Himalaya" is a globally magnetic word; "Fire Kitchen" says exactly what you'll watch.</p>
+    </div>
+    <div class="card">
+      <h3>Wild Spice</h3>
+      <p class="mb0" style="color:var(--muted);font-size:.93rem;">Short, brandable, merch-ready. Leans into India's flavor identity while staying outdoors. Easy handle, easy logo.</p>
+    </div>
+    <div class="card">
+      <h3>Ember &amp; Forest</h3>
+      <p class="mb0" style="color:var(--muted);font-size:.93rem;">The Almazan lane — moody, ASMR, "foodporn." Best if you commit to zero talking and heavy sound design.</p>
+    </div>
+  </div>
+
+  <h3>The format bible — lock these before video #1</h3>
+  <div class="tbl-scroll">
+    <table>
+      <tbody>
+        <tr><td style="width:38%;"><strong>Language</strong></td><td>Near-wordless. Natural sound + sizzle + fire. English on-screen titles only. Kills the language barrier → global reach.</td></tr>
+        <tr><td><strong>Runtime</strong></td><td>10–16 min hero videos; a cinematic 30–60s cold open before the title card.</td></tr>
+        <tr><td><strong>Signature ritual</strong></td><td>One repeatable visual you own — e.g. always end by serving the feast to real people (village elders, kids, workers). Builds the emotional payoff VCC is loved for.</td></tr>
+        <tr><td><strong>Setting</strong></td><td>Rotate river / forest / mountain / field. Water and fire in the same frame = maximum click-through.</td></tr>
+        <tr><td><strong>Sound</strong></td><td>Invest here early. Clean sizzle, crackle, chopping, and ambient nature carry a wordless video. Bad audio kills more cooking channels than bad video.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- VIDEO CONCEPTS -->
+<section>
+  <span class="eyebrow">First 10 Videos</span>
+  <h2>Titles engineered for global click-through</h2>
+  <p class="sec-intro">Front-load the most visual, most primal concepts — those get shared internationally and pull the first wave of subscribers. Each is written the way it would appear as a title.</p>
+
+  <div>
+    <div class="vid"><span class="no num">1</span><div><p class="ttl">Whole Lamb Roasted Over an Open Fire in the Himalayas</p><p class="meta">Flagship hero. The single most-clicked concept in the genre. Shoot this first, make it look incredible. <span class="tag">Whole animal</span></p></div></div>
+    <div class="vid"><span class="no num">2</span><div><p class="ttl">Catching &amp; Cooking River Fish on the Riverbank</p><p class="meta">"Catch &amp; cook" is one of the biggest sub-genres on the planet. Water + fire in one frame. <span class="tag">Catch &amp; cook</span></p></div></div>
+    <div class="vid"><span class="no num">3</span><div><p class="ttl">Giant Tandoori Chicken Cooked in a Hand-Dug Earth Pit</p><p class="meta">India's signature flavor meets primitive technique. Digging the pit is the story. <span class="tag">Earth oven</span></p></div></div>
+    <div class="vid"><span class="no num">4</span><div><p class="ttl">Bamboo Chicken — Cooked Inside Bamboo Over Fire</p><p class="meta">Northeast India specialty. Exotic, gorgeous, almost nobody in the genre does it. <span class="tag">Signature-India</span></p></div></div>
+    <div class="vid"><span class="no num">5</span><div><p class="ttl">Whole Goat Slow-Cooked Underground for 12 Hours</p><p class="meta">Time + scale = drama. Great for a longer, "epic" upload. <span class="tag">Whole animal</span></p></div></div>
+    <div class="vid"><span class="no num">6</span><div><p class="ttl">Mutton Rogan Josh in a Cast-Iron Cauldron in the Forest</p><p class="meta">Rich, red, steaming — a thumbnail that pops. Classic dish, wild setting. <span class="tag">Cauldron</span></p></div></div>
+    <div class="vid"><span class="no num">7</span><div><p class="ttl">Making Butter Chicken From Scratch — Ghee, Fire &amp; Clay</p><p class="meta">The world's most-searched Indian dish, cooked the primal way. SEO magnet. <span class="tag">Search bait</span></p></div></div>
+    <div class="vid"><span class="no num">8</span><div><p class="ttl">Monsoon Feast — Cooking a Full Meal Under the Rain</p><p class="meta">Weather = built-in drama and mood. Uniquely Indian, uniquely cinematic. <span class="tag">Atmosphere</span></p></div></div>
+    <div class="vid"><span class="no num">9</span><div><p class="ttl">Foraging &amp; Cooking Wild Mushrooms on the Mountain</p><p class="meta">Foraging crossover pulls a second audience. Cheap to shoot. <span class="tag">Forage</span></p></div></div>
+    <div class="vid"><span class="no num">10</span><div><p class="ttl">Feeding the Whole Village — 100 People, One Giant Fire</p><p class="meta">The village-channel emotional payoff. Your recurring "serve real people" ritual, at scale. <span class="tag">Community</span></p></div></div>
+  </div>
+</section>
+
+<!-- PRODUCTION -->
+<section>
+  <span class="eyebrow">Production System</span>
+  <h2>Running the shoot from abroad</h2>
+  <p class="sec-intro">You direct; your partners quarterback on the ground; the hired crew executes. Keep it a repeatable machine so quality doesn't depend on you being in the room.</p>
+
+  <div class="grid two" style="margin-bottom:24px;">
+    <div class="card">
+      <h3>Roles</h3>
+      <ul class="clean">
+        <li><strong>You (US):</strong> strategy, titles, thumbnails, final edit sign-off, monetization, sponsors.</li>
+        <li><strong>Partners (India):</strong> location scouting, crew management, ingredient/logistics, on-day producer.</li>
+        <li><strong>Cook/host:</strong> the face &amp; hands. Skilled, calm, camera-comfortable. This casting decision matters most.</li>
+        <li><strong>Camera + editor:</strong> one or two hires. Start with a strong local videographer who also edits.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Gear ladder (buy only as revenue allows)</h3>
+      <ul class="clean">
+        <li><strong>Stage 0 (&lt;₹2.5K):</strong> good phone, tripod + clamp, one clip mic, daylight.</li>
+        <li><strong>Stage 1:</strong> used mirrorless (Sony/Canon), gimbal, shotgun mic — <em>and a drone</em> (the wilderness look).</li>
+        <li><strong>Stage 2:</strong> 2nd camera, dedicated editor, proper sound recorder.</li>
+        <li><strong>Stage 3:</strong> multi-shoot months, small salaried team.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="why">
+    <b>The drone is not optional at Stage 1</b>
+    The sweeping aerial over mountains/river is <em>the</em> signature shot that makes wilderness cooking look like $2M, not like a home video. A ₹40–70K drone is the highest-leverage single purchase after your first revenue.
+  </div>
+
+  <h3 style="margin-top:24px;">Cadence</h3>
+  <p class="mb0" style="color:var(--muted);">Batch-shoot. Send the crew out for <strong>2–4 videos in one location trip</strong>, then upload weekly from the backlog. This keeps a steady schedule (the algorithm rewards consistency) without needing a shoot every week. Aim for <strong>1 upload/week</strong> minimum.</p>
+</section>
+
+<!-- US SETUP -->
+<section>
+  <span class="eyebrow">Money Plumbing</span>
+  <h2>The US entity &amp; AdSense setup</h2>
+  <p class="sec-intro">This is the part that turns views into USD in a US bank. You have a head start — you already run a US company.</p>
+
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Step</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Entity</strong></td><td>Own the channel under a US LLC (new one, or a subsidiary/DBA of your existing structure). Keeps channel income and IP clean and separate.</td></tr>
+        <tr><td><strong>EIN + bank</strong></td><td>US EIN and a US business bank account in the LLC's name — this is where AdSense pays out, in USD.</td></tr>
+        <tr><td><strong>AdSense</strong></td><td>Create AdSense under the US entity with the US address; submit US tax info (W-9 as a US person). This is what avoids the extra foreign withholding.</td></tr>
+        <tr><td><strong>Crew payments</strong></td><td>Pay the India crew from the LLC as contractor expenses (Wise/Payoneer). Keep receipts — these are deductible costs against the channel's US income.</td></tr>
+        <tr><td><strong>Monetization gate</strong></td><td>Turn on the money only after 1,000 subs + 4,000 watch-hours (or 10M valid Shorts views). Plan content to hit that first.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="disc">Structure and tax specifics depend on your situation and your partners' stake — confirm the entity, ownership split, and cross-border tax treatment with a CPA/attorney before filing. This is a setup map, not legal or tax advice.</div>
+</section>
+
+<!-- BUDGET / ROADMAP -->
+<section>
+  <span class="eyebrow">Budget &amp; Reinvestment</span>
+  <h2>Start lean, let the channel buy its own upgrades</h2>
+  <p class="sec-intro">The discipline that separates winners: don't buy the drone before the audience. Each stage is funded by the previous one.</p>
+
+  <div class="tbl-scroll" style="margin-bottom:20px;">
+    <table>
+      <thead><tr><th>Stage</th><th>Spend</th><th>Unlocks</th><th>Trigger to advance</th></tr></thead>
+      <tbody>
+        <tr><td><strong>0 · Prove it</strong></td><td class="num">&lt;₹5K</td><td>Phone kit, first 8–10 videos, crew day-rates</td><td>Consistent quality + early view traction</td></tr>
+        <tr><td><strong>1 · Look pro</strong></td><td class="num">₹60K–1.5L</td><td>Used mirrorless, gimbal, mic, <span class="em">drone</span></td><td>Monetized (1K subs / 4K hrs) or a viral hit</td></tr>
+        <tr><td><strong>2 · Systematize</strong></td><td class="num">Revenue-funded</td><td>Dedicated editor, 2nd cam, better sound</td><td>Steady $/mo covering costs</td></tr>
+        <tr><td><strong>3 · Scale</strong></td><td class="num">Revenue-funded</td><td>Salaried team, multi-shoot months, merch</td><td>Sponsors + ad revenue &gt; team cost</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>90-day launch roadmap</h3>
+  <div style="margin-top:14px;">
+    <div class="phase"><div class="dot">1</div><div class="body"><span class="when">Weeks 1–3 · Foundation</span><h3>Lock the format &amp; cast the cook</h3><p class="mb0" style="color:var(--muted);">Name + handle, format bible, US LLC/AdSense in motion, scout the first location, cast the host. Casting the right cook is the highest-stakes decision — screen-test a few.</p></div></div>
+    <div class="phase"><div class="dot">2</div><div class="body"><span class="when">Weeks 4–7 · First batch</span><h3>Shoot videos #1–4 in one trip</h3><p class="mb0" style="color:var(--muted);">Lead with the whole-lamb hero. Nail sound and the signature "serve real people" ending. Edit #1 to a high bar — it sets the channel's ceiling.</p></div></div>
+    <div class="phase"><div class="dot">3</div><div class="body"><span class="when">Weeks 8–12 · Publish &amp; learn</span><h3>Upload weekly, iterate on thumbnails</h3><p class="mb0" style="color:var(--muted);">Publish the backlog 1/week. Watch CTR and average view duration. Double down on whatever concept over-performs; reshoot the next batch around it.</p></div></div>
+  </div>
+</section>
+
+<!-- KPIS / RISKS -->
+<section>
+  <span class="eyebrow">Watch &amp; Beware</span>
+  <h2>Signals to track — and traps to dodge</h2>
+
+  <div class="grid two">
+    <div class="card">
+      <h3>KPIs that matter</h3>
+      <ul class="clean">
+        <li><strong>Click-through rate &gt; 5%</strong> — thumbnail/title health.</li>
+        <li><strong>Avg view duration</strong> — is the cinematography holding people?</li>
+        <li><strong>% non-India audience</strong> — proof the "global" strategy is working (drives RPM).</li>
+        <li><strong>Path to 1K subs / 4K hrs</strong> — the monetization gate.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Traps</h3>
+      <ul class="clean">
+        <li><span class="pill crit">Critical</span> &nbsp;<strong>Never show slaughter on camera.</strong> Start from prepared meat — slaughter footage gets age-restricted / demonetized and tanks global reach.</li>
+        <li><span class="pill warn">Watch</span> &nbsp;Weak audio. Budget for sound before a second camera.</li>
+        <li><span class="pill warn">Watch</span> &nbsp;Crew reliability &amp; weather — always batch-shoot backup content.</li>
+        <li><span class="pill warn">Watch</span> &nbsp;Copycat look. Your signature ritual + Indian settings are the moat.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="foot wrap">
+  <p class="mb0">Wilderness Cooking Channel — India production, global audience, USD revenue. Figures are illustrative planning ranges drawn from public reporting on Village Cooking Channel, Wilderness Cooking (Tavakkul) and AlmazanKitchen; actual results vary widely. Confirm entity &amp; tax setup with a professional.</p>
+</div>
+
+</div>
