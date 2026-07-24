@@ -162,10 +162,22 @@
   ul.clean li:last-child { border-bottom: none; }
   ul.clean li::before { content: "▸"; position: absolute; left: 4px; color: var(--ember); }
 
+  nav.topnav { position: sticky; top:0; z-index:20; background: color-mix(in oklab, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  nav.topnav .wrap { display:flex; align-items:center; gap:18px; height:54px; }
+  nav.topnav .brand { font-family:"Iowan Old Style",Georgia,serif; font-weight:700; font-size:1rem; margin-right:auto; display:flex; align-items:center; gap:8px; }
+  nav.topnav a { color: var(--muted); text-decoration:none; font-size:.86rem; font-weight:600; }
+  nav.topnav a.active, nav.topnav a:hover { color: var(--ember); }
+  nav.topnav .fdot { width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 50% 35%, var(--ember-2), var(--ember)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--ember) 16%, transparent); display:inline-block; }
   .foot { padding: 40px 0 60px; color: var(--faint); font-size: .85rem; }
   .disc { font-size: .82rem; color: var(--faint); border:1px dashed var(--line); border-radius:10px; padding: 14px 16px; margin-top: 8px; }
   .mt0 { margin-top:0; } .mb0 { margin-bottom:0; }
 </style>
+
+<nav class="topnav"><div class="wrap">
+  <span class="brand"><span class="fdot"></span> Wilderness Cooking</span>
+  <a href="index.html" class="active">Playbook</a>
+  <a href="report.html">Business Report</a>
+</div></nav>
 
 <div class="hero">
   <div class="hero-inner">

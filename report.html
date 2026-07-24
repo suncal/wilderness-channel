@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wilderness Cooking Channel — Business Report & Production Bible</title>
+<style>
+  html,body{margin:0;padding:0;}
+  :root {
+    --bg:#F3EEE6; --surface:#FBF8F2; --surface-2:#EDE6DA; --ink:#241F1B; --muted:#6B5F54;
+    --faint:#8E8175; --line:#DED4C5; --ember:#C4531B; --ember-2:#E2703A; --moss:#5C6B45;
+    --moss-2:#77895A; --good:#5C6B45; --warn:#B07A15; --crit:#A2402C;
+    --shadow:0 1px 2px rgba(36,31,27,.06), 0 8px 28px rgba(36,31,27,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#17130F; --surface:#211A15; --surface-2:#2A2019; --ink:#EFE7DB; --muted:#AC9C8B;
+      --faint:#7E7060; --line:#382E26; --ember:#E8763B; --ember-2:#F0925E; --moss:#8FA271;
+      --moss-2:#A3B586; --good:#8FA271; --warn:#D9A03E; --crit:#D96A50;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:#F3EEE6; --surface:#FBF8F2; --surface-2:#EDE6DA; --ink:#241F1B; --muted:#6B5F54;
+    --faint:#8E8175; --line:#DED4C5; --ember:#C4531B; --ember-2:#E2703A; --moss:#5C6B45;
+    --moss-2:#77895A; --good:#5C6B45; --warn:#B07A15; --crit:#A2402C;
+    --shadow:0 1px 2px rgba(36,31,27,.06), 0 8px 28px rgba(36,31,27,.07);
+  }
+  :root[data-theme="dark"] {
+    --bg:#17130F; --surface:#211A15; --surface-2:#2A2019; --ink:#EFE7DB; --muted:#AC9C8B;
+    --faint:#7E7060; --line:#382E26; --ember:#E8763B; --ember-2:#F0925E; --moss:#8FA271;
+    --moss-2:#A3B586; --good:#8FA271; --warn:#D9A03E; --crit:#D96A50;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.4);
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.62; font-size: 17px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+  h1,h2,h3,h4 { font-family: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif; font-weight: 700; text-wrap: balance; line-height: 1.14; }
+  .eyebrow { font-family: ui-monospace, "SF Mono", Menlo, monospace; text-transform: uppercase; letter-spacing: .18em; font-size: .70rem; color: var(--ember); font-weight: 600; }
+  .num { font-variant-numeric: tabular-nums; }
+  .em { color: var(--ember); font-weight:600; }
+  .crit-t { color: var(--crit); font-weight:600; }
+  .tick { color: var(--moss-2); font-weight:600; }
+
+  /* nav */
+  nav { position: sticky; top:0; z-index:20; background: color-mix(in oklab, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display:flex; align-items:center; gap:18px; height: 54px; }
+  nav .brand { font-family:"Iowan Old Style",Georgia,serif; font-weight:700; font-size:1rem; margin-right:auto; display:flex; align-items:center; gap:8px; }
+  nav a { color: var(--muted); text-decoration:none; font-size:.86rem; font-weight:600; }
+  nav a.active, nav a:hover { color: var(--ember); }
+  .flame { width:11px; height:11px; border-radius:50%; background: radial-gradient(circle at 50% 35%, var(--ember-2), var(--ember)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--ember) 16%, transparent); display:inline-block; }
+
+  /* hero */
+  .hero { border-bottom:1px solid var(--line); background: radial-gradient(120% 90% at 85% 6%, rgba(226,112,58,.18), transparent 55%), radial-gradient(90% 70% at 8% 100%, rgba(92,107,69,.14), transparent 60%); }
+  .hero-inner { padding: 60px 22px 46px; max-width:880px; margin:0 auto; }
+  h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); margin: 14px 0 16px; letter-spacing:-.01em; }
+  h1 em { font-style: italic; color: var(--ember); }
+  .lede { font-size: clamp(1.05rem,2.2vw,1.28rem); color: var(--muted); max-width: 54ch; margin:0; }
+
+  section { padding: 46px 0; border-bottom: 1px solid var(--line); }
+  h2 { font-size: clamp(1.5rem, 3.6vw, 2.05rem); margin: 6px 0 8px; }
+  h3 { font-size: 1.18rem; margin: 26px 0 8px; }
+  h4 { font-size: 1rem; margin: 18px 0 6px; }
+  .sec-intro { color: var(--muted); max-width: 64ch; margin: 0 0 22px; }
+  p { margin: 0 0 15px; } a { color: var(--ember); }
+  ul.clean { list-style:none; padding:0; margin: 0 0 8px; }
+  ul.clean li { padding: 7px 0 7px 26px; position: relative; border-bottom: 1px solid var(--line); }
+  ul.clean li:last-child { border-bottom:none; }
+  ul.clean li::before { content:"▸"; position:absolute; left:4px; color: var(--ember); }
+
+  .why { border-left: 3px solid var(--moss); background: color-mix(in oklab, var(--moss) 8%, var(--surface)); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 20px 0; }
+  .why b { color: var(--moss-2); font-family: ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .verdict { border:1px solid var(--ember); background: color-mix(in oklab, var(--ember) 9%, var(--surface)); border-radius:14px; padding: 22px 24px; box-shadow: var(--shadow); margin-top: 8px; }
+  .verdict .vlabel { font-family: ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color: var(--ember); font-weight:600; }
+  .verdict h3 { font-size: clamp(1.25rem,3vw,1.5rem); margin: 8px 0 12px; }
+  .verdict p:last-child { margin-bottom:0; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow); }
+  .grid { display:grid; gap:16px; }
+  @media (min-width:640px){ .grid.two{grid-template-columns:1fr 1fr;} .grid.three{grid-template-columns:repeat(3,1fr);} }
+
+  .tbl-scroll { overflow-x:auto; border:1px solid var(--line); border-radius:12px; box-shadow: var(--shadow); margin: 16px 0; }
+  table { width:100%; border-collapse: collapse; font-size:.92rem; }
+  th,td { padding: 11px 13px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background: var(--surface-2); font-size:.70rem; text-transform:uppercase; letter-spacing:.06em; color: var(--muted); font-weight:600; white-space:nowrap; }
+  tr:last-child td { border-bottom:none; }
+  td.num, th.num { font-variant-numeric: tabular-nums; }
+
+  .stat-row { display:flex; flex-wrap:wrap; gap:14px; margin: 8px 0 4px; }
+  .stat { flex:1 1 150px; background: var(--surface); border:1px solid var(--line); border-radius:12px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .stat .big { font-family:"Iowan Old Style",Georgia,serif; font-size:1.7rem; font-weight:700; display:block; letter-spacing:-.01em; }
+  .stat .lbl { font-size:.74rem; color: var(--faint); text-transform:uppercase; letter-spacing:.06em; }
+
+  .pill { display:inline-block; font-size:.66rem; font-weight:600; padding: 3px 9px; border-radius:999px; letter-spacing:.03em; }
+  .pill.good{ background: color-mix(in oklab, var(--good) 16%, transparent); color:var(--good);}
+  .pill.warn{ background: color-mix(in oklab, var(--warn) 18%, transparent); color:var(--warn);}
+  .pill.crit{ background: color-mix(in oklab, var(--crit) 16%, transparent); color:var(--crit);}
+
+  .toc { columns: 2; column-gap: 28px; font-size:.93rem; }
+  @media (max-width:560px){ .toc{columns:1;} }
+  .toc a { display:block; padding: 5px 0; color: var(--ink); text-decoration:none; border-bottom:1px solid var(--line); }
+  .toc a:hover { color: var(--ember); }
+  .toc .n { color: var(--faint); font-variant-numeric:tabular-nums; margin-right:8px; font-family: ui-monospace,Menlo,monospace; font-size:.8rem; }
+
+  .foot { padding: 36px 0 60px; color: var(--faint); font-size: .82rem; }
+  .src { font-size:.8rem; color: var(--faint); }
+  .src a { color: var(--faint); text-decoration: underline; }
+  .mb0{margin-bottom:0;} .mt0{margin-top:0;}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="brand"><span class="flame"></span> Wilderness Cooking</span>
+  <a href="index.html">Playbook</a>
+  <a href="report.html" class="active">Business Report</a>
+</div></nav>
+
+<div class="hero"><div class="hero-inner">
+  <span class="eyebrow">Business Report &amp; Production Bible · 2026</span>
+  <h1>How village &amp; wilderness cooking channels win — and <em>exactly</em> how we build ours</h1>
+  <p class="lede">Deep research on the channels that turned open-fire cooking into millions of views, plus the concrete, low-cost plan to make our videos: gear, technique, growth, and money.</p>
+</div></div>
+
+<div class="wrap">
+
+<section>
+  <span class="eyebrow">Contents</span>
+  <h2>What's in this report</h2>
+  <div class="toc" style="margin-top:16px;">
+    <a href="#opportunity"><span class="n">01</span>The opportunity in one page</a>
+    <a href="#channels"><span class="n">02</span>Deep research: the channels that proved it</a>
+    <a href="#patterns"><span class="n">03</span>The 10 repeatable success patterns</a>
+    <a href="#gear"><span class="n">04</span>What we need to make the videos (priced)</a>
+    <a href="#technique"><span class="n">05</span>Make cheap footage look expensive</a>
+    <a href="#growth"><span class="n">06</span>Getting millions of views &amp; subscribers</a>
+    <a href="#money"><span class="n">07</span>The money: RPM, projections, timeline</a>
+    <a href="#odds"><span class="n">08</span>The honest odds</a>
+    <a href="#next"><span class="n">09</span>What we do first</a>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="opportunity">
+  <span class="eyebrow">01 · The Opportunity</span>
+  <h2>Why this is the cheapest business with a global ceiling</h2>
+  <p class="sec-intro">The model is proven, dominated by creators exactly like us — rural, non-professional, cooking outdoors — and the whole thing starts on a phone. The single lever that turns views into real money is <strong>audience geography</strong>: a US viewer is worth 5–50× an Indian viewer, so we engineer everything to pull Western eyeballs to India-filmed video.</p>
+  <div class="stat-row">
+    <div class="stat"><span class="big num">&lt;₹5K</span><span class="lbl">To shoot video #1</span></div>
+    <div class="stat"><span class="big num">30M / 9.3B</span><span class="lbl">Village Cooking Channel subs / views</span></div>
+    <div class="stat"><span class="big num">47×</span><span class="lbl">US CPM vs India CPM</span></div>
+    <div class="stat"><span class="big num">$2–3.5M</span><span class="lbl">Wilderness Cooking est. yearly</span></div>
+  </div>
+  <div class="why"><b>The whole strategy in one sentence</b>
+    Cinematic outdoor cooking + near-wordless / ASMR presentation + English packaging + spectacle dishes = a video that plays in every country → global audience → Tier-1 ad rates → USD income collected through a US entity.</div>
+</section>
+
+<!-- 02 -->
+<section id="channels">
+  <span class="eyebrow">02 · Deep Research</span>
+  <h2>The channels that proved the model</h2>
+  <p class="sec-intro">Every one of these started with humble, non-professional creators and simple gear. Note how often the breakout came 2–3 years in, and how a single high-profile collaboration tipped several of them into mass awareness.</p>
+
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Channel</th><th>Started</th><th>Who / origin</th><th class="num">Subs / views</th><th>Signature</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Village Cooking Channel</strong><br><span class="src">Tamil Nadu, India</span></td><td>2018</td><td>75-yo ex-caterer Periyathambi + 5 grandsons/relatives (farmers). Clay pots &amp; open fire, "no modern equipment" rule.</td><td class="num em">30.1M / 9.3B</td><td>Whole-animal village feasts served to orphanages. "Watermelon Juice" ~300M views. First Tamil Diamond Award.</td></tr>
+        <tr><td><strong>Aja Kitchen</strong><br><span class="src">Odisha, India</span></td><td>2021</td><td>A grandmother + grandfather duo filmed by family. No media background.</td><td class="num em">29.6M / 3B+</td><td><span class="tick">Almost entirely wordless ASMR</span> — one of the fastest-scaling channels ever. Global via zero language barrier.</td></tr>
+        <tr><td><strong>Primitive Technology</strong><br><span class="src">Australia</span></td><td>2015</td><td>John Plant — a lawn-mower with an unused science degree, hobby since age 11.</td><td class="num em">10.9M / 1.17B</td><td><span class="tick">Zero dialogue</span>, only ambient sound. "Tiled Roof Hut" ~85M. The no-talking template.</td></tr>
+        <tr><td><strong>Village Food Channel</strong><br><span class="src">Kerala, India (Firoz)</span></td><td>2018</td><td>Firoz Chuttipara — ex-welder in Saudi, then ran a photocopy shop. Self-taught cook.</td><td class="num em">9.1M / 2.1B</td><td>Extreme-scale Kerala feasts — 3-goat biryani, 1,000 quail eggs, shark curry.</td></tr>
+        <tr><td><strong>Wilderness Cooking</strong><br><span class="src">Azerbaijan (Tavakkul)</span></td><td>~2020</td><td>Chef Tavakkul, mountain villager; nephew Shamil introduced him to YouTube. Built his own tandir.</td><td class="num em">~6–7M / 1.8B</td><td>Whole lamb on hot stone in cinematic mountains. <span class="em">~$2–3.5M/yr.</span> Mark Wiens crossover (2022) accelerated it.</td></tr>
+        <tr><td><strong>AlmazanKitchen</strong><br><span class="src">Serbia (Alex Almazan)</span></td><td>2016</td><td>Uncle-and-forest cooking tradition, filmed for fun.</td><td class="num em">3.8M</td><td><span class="tick">"Just cooking, no talking."</span> Branded Serbian knife + "Mr. Ramsay the Owl." Top video ~10.8M.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src">Sources: <a href="https://en.wikipedia.org/wiki/Village_Cooking_Channel">Wikipedia (VCC)</a>, <a href="https://thebetterindia.com/303720/village-cooking-channel-youtube-periyathambi-pudukottai-south-indian-recipes-watch-video/">Better India</a>, <a href="https://en.wikipedia.org/wiki/Firoz_Chuttipara">Wikipedia (Firoz)</a>, <a href="https://www.diningandcooking.com/1216129/how-wilderness-cooking-makes-millions-on-youtube/">Dining &amp; Cooking (Tavakkul)</a>, <a href="https://almazankitchen.com/pages/about">AlmazanKitchen About</a>, <a href="https://en.wikipedia.org/wiki/Primitive_Technology">Wikipedia (Primitive Technology)</a>, <a href="https://www.thedailymeal.com/2069085/most-popular-youtube-cooking-channels/">Daily Meal (Aja Kitchen)</a>.</p>
+</section>
+
+<!-- 03 -->
+<section id="patterns">
+  <span class="eyebrow">03 · The Pattern</span>
+  <h2>10 things the winners all do</h2>
+  <p class="sec-intro">These recur across two or more of the channels above. This is our design spec — build every video against this list.</p>
+  <div class="grid two">
+    <div class="card"><h4 class="mt0">1 · Wordless / no-talking format</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">The strongest pattern. Removing language makes videos borderless — they travel globally with no translation. (Aja, Almazan, Primitive Tech.)</p></div>
+    <div class="card"><h4 class="mt0">2 · ASMR natural sound</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Amplified sizzle, crackle, chopping, and nature ambience replace narration — the "senses" hook.</p></div>
+    <div class="card"><h4 class="mt0">3 · Whole-animal / massive scale</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Whole lamb, giant cauldron, huge batch. Scale is the "you have to see this" share trigger.</p></div>
+    <div class="card"><h4 class="mt0">4 · Cinematic natural setting</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Real fields, forests, mountains, rivers — the landscape is a co-star, not a studio.</p></div>
+    <div class="card"><h4 class="mt0">5 · "No modern equipment" rule</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Clay pots, hand-built ovens, open fire. The constraint <em>is</em> the brand.</p></div>
+    <div class="card"><h4 class="mt0">6 · Serving real people</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Feeding village kids, elders, orphanages. The goodwill payoff makes people share.</p></div>
+    <div class="card"><h4 class="mt0">7 · Humble, authentic creators</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Farmers, a welder, a lawn-mower. Un-slick and real — the opposite of influencer polish.</p></div>
+    <div class="card"><h4 class="mt0">8 · A grandparent / family hook</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">Intergenerational warmth is emotionally sticky and instantly relatable.</p></div>
+    <div class="card"><h4 class="mt0">9 · A breakout accelerant</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">A high-profile collab often tips a steady channel into mass awareness (Wiens → Tavakkul).</p></div>
+    <div class="card"><h4 class="mt0">10 · Signature recurring motif</h4><p class="mb0" style="color:var(--muted);font-size:.93rem;">A branded object/character (Almazan's knife &amp; owl) makes videos recognizable and merch-able.</p></div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="gear">
+  <span class="eyebrow">04 · What We Need</span>
+  <h2>The kit to make the videos — priced, in stages</h2>
+  <p class="sec-intro">The core truth from the research: <strong>audio and light matter more than the camera.</strong> A phone in golden hour with clean sizzle audio beats a 4K camera with a tinny mic. We spend our first rupees on <em>sound</em>, not sensors — and we only buy the next tier once revenue justifies it.</p>
+
+  <h3>Stage 0 — Bootstrapped (under ₹5,000)</h3>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Item</th><th>What</th><th class="num">₹</th></tr></thead>
+      <tbody>
+        <tr><td>Camera</td><td>Any phone that shoots 4K (an iPhone 11/12 or Redmi/Realme you already own)</td><td class="num">owned</td></tr>
+        <tr><td><span class="em">Audio (the real spend)</span></td><td>Boya BY-M1 wired lavalier — clip 10–15cm from the pan to capture sizzle &amp; crackle</td><td class="num">₹700–1,000</td></tr>
+        <tr><td>Tripod</td><td>Basic aluminium tripod + universal phone clamp</td><td class="num">₹400–800</td></tr>
+        <tr><td>2nd angle</td><td>Mini gorilla tripod to wrap on a branch for the overhead chopping shot</td><td class="num">₹150–400</td></tr>
+        <tr><td>Lighting</td><td>Natural light + a white cloth/thermocol bounce reflector</td><td class="num">₹0</td></tr>
+        <tr><td>Editing</td><td>DaVinci Resolve (free) + CapCut (free)</td><td class="num">₹0</td></tr>
+        <tr><td colspan="2"><strong>Total to launch</strong></td><td class="num em">~₹1,500–3,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="why"><b>Why audio first</b>
+    The Boya's long cable lets you place the capsule right by the food to record fat crackle and boiling — that intimate ASMR sizzle is ~80% of the appeal. The phone is fine; the mic is what makes it feel expensive.</div>
+
+  <h3>Stage 1 — First revenue (~₹60,000–1,50,000)</h3>
+  <p style="color:var(--muted);">Trigger: monetized, or savings to reinvest. This is the "looks professionally shot" tier.</p>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Category</th><th>Buy</th><th class="num">₹ (used/new)</th></tr></thead>
+      <tbody>
+        <tr><td>Camera</td><td><strong>Sony a6400</strong> (used) — sharp 4K, flip screen, best autofocus; or <strong>Sony ZV-E10</strong> for creators / <strong>Canon M50 II</strong> for "Canon colours"</td><td class="num">₹48K–70K</td></tr>
+        <tr><td>Lens</td><td>50mm f/1.8 "nifty fifty" for creamy blurred-background food shots</td><td class="num">₹8K–12K</td></tr>
+        <tr><td>On-cam mic</td><td>Boya BY-MM1 shotgun for clean sizzle</td><td class="num">₹1.7K–3K</td></tr>
+        <tr><td><span class="em">ASMR recorder</span></td><td><strong>Zoom H1essential</strong> (32-bit float — a loud oil-splatter never distorts) beside the fire</td><td class="num">₹10.5K</td></tr>
+        <tr><td>Wireless</td><td>Boya BY-WM4 Pro-K2 dual wireless</td><td class="num">₹7.7K–8.5K</td></tr>
+        <tr><td>Stabilization</td><td>DJI Osmo Mobile SE / OM gimbal (phone) or a fluid-head tripod (camera)</td><td class="num">₹3K–14K</td></tr>
+        <tr><td><span class="em">Drone</span></td><td><strong>DJI Mini 4K</strong> — true 4K, 3-axis gimbal, under 249g. The aerial "reveal" is the signature wilderness shot.</td><td class="num">₹35K–45K</td></tr>
+        <tr><td>Lighting</td><td>Godox 5-in-1 reflector + one small bi-color LED for dusk fill</td><td class="num">₹2K–5K</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="why"><b>Drone = highest-leverage single buy</b>
+    The rising aerial over forest/river to the tiny cooking fire is what makes wilderness content look like $2M, not a home video. Get the <strong>Mini 4K</strong> (3-axis gimbal), not the cheaper Neo. <span class="crit-t">Register any camera drone on the DGCA DigitalSky portal — a monetized channel is "commercial" use and needs a Remote Pilot Certificate; no flying in no-fly/forest/airport zones.</span></div>
+
+  <h3>Stage 2+ — Scaling (₹2L+, revenue-funded)</h3>
+  <ul class="clean">
+    <li>Faster prime lenses (Sigma 30mm/56mm f/1.4) for ultra-creamy bokeh; a second camera body so you never re-stage a shot.</li>
+    <li>Motorized slider for the slow cinematic push-in on the finished plate; better drone (Mini 4 Pro / Air 3).</li>
+    <li>2–3 bi-color LED panels + softboxes for controlled dusk/night cooking; a dedicated editor on payroll.</li>
+    <li>DaVinci Resolve Studio (one-time ~₹28K) — but the free version does everything for years.</li>
+  </ul>
+  <p class="src">Sources: <a href="https://www.91mobiles.com/list-of-phones/4k-recording-phones">91mobiles</a>, <a href="https://cameraclub.in/collections/used-cameras">Camera Club India (used)</a>, <a href="https://boya-mic.in/products/by-mm1-1">Boya</a>, <a href="https://poojaelectronics.in/product/zoom-h1essential-audio-recorder-india/">Zoom H1essential</a>, <a href="https://g1kart.com/product/dji-mini-4k/">DJI Mini 4K</a>, <a href="https://zbotic.in/dgca-drone-rules-india-2026-registration-license-guide/">DGCA 2026 rules</a>, <a href="https://bityclips.com/blog/davinci-resolve-review-2026">DaVinci Resolve</a>.</p>
+</section>
+
+<!-- 05 -->
+<section id="technique">
+  <span class="eyebrow">05 · Technique</span>
+  <h2>Make cheap footage look expensive</h2>
+  <p class="sec-intro">Ten habits that separate Stage-0 phone footage that looks amateur from footage that looks produced. All free.</p>
+  <div class="grid two">
+    <div class="card"><ul class="clean mb0">
+      <li><strong>Golden hour.</strong> Shoot the first/last hour of sun — soft, warm light flatters food and hides cheap-camera weaknesses. Avoid harsh noon.</li>
+      <li><strong>Wide + close, every action.</strong> Get an establishing wide AND a tight macro of each step. Cutting scales reads instantly as "produced."</li>
+      <li><strong>Overhead top-down</strong> for chopping/mixing — the iconic food angle. A branch-mounted phone does it free.</li>
+      <li><strong>Slow-mo the hero moments</strong> — oil hitting the pan, honey drizzle, steam, the cut into the meat. Shoot 60–120fps.</li>
+      <li><strong>Back/side-light the food</strong> so steam glows and oil glistens; bounce a reflector to fill shadows.</li>
+    </ul></div>
+    <div class="card"><ul class="clean mb0">
+      <li><strong>Shallow depth of field.</strong> Open the aperture (f/1.8) or use phone Cinematic mode so the background melts.</li>
+      <li><strong>Move the camera slowly.</strong> A slow push-in on the finished plate adds value; smooth always beats shaky.</li>
+      <li><strong>Lock it down for detail.</strong> Tripod + zero movement on ASMR close-ups so the <em>sound</em> is the star.</li>
+      <li><strong>One drone reveal</strong> per video — a single great aerial elevates the whole piece.</li>
+      <li><strong>Foreground layers.</strong> Shoot through leaves, steam, or flames for depth.</li>
+    </ul></div>
+  </div>
+  <div class="why"><b>Four free settings that do the most</b>
+    Shoot 24fps at 1/48s shutter, lock white balance manually, and expose slightly under to protect highlights. These alone make phone footage look cinematic.</div>
+  <p class="mt0"><strong>The grade (free, in DaVinci):</strong> shoot flat, deepen shadows for a moody tone, warm the highlights and push oranges/yellows (browned meat, oil, spices live there), add a hint of teal to the shadows, finish with subtle grain + vignette. That's the "foodporn" look.</p>
+</section>
+
+<!-- 06 -->
+<section id="growth">
+  <span class="eyebrow">06 · Growth</span>
+  <h2>Getting the millions of views &amp; subscribers</h2>
+  <p class="sec-intro">The algorithm is a recommendation engine — 70%+ of views come from Browse/Suggested, not search. It amplifies videos with high <strong>click-through rate × average view duration</strong>. Everything below optimizes those two numbers and pulls a global audience.</p>
+
+  <div class="grid two">
+    <div class="card">
+      <h4 class="mt0">Thumbnails → target 6%+ CTR</h4>
+      <ul class="clean mb0">
+        <li>Hero-dish extreme close-up: glistening food filling the frame, steam visible.</li>
+        <li>Warm food tones against the green/brown wilderness = natural high contrast (a kitchen channel can't do this).</li>
+        <li>≤3 words, huge — or zero text / a single number ("50 KG") for global reach.</li>
+        <li>Lock one visual signature; A/B test with YouTube's Test &amp; Compare.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="mt0">Titles → English, always</h4>
+      <ul class="clean mb0">
+        <li>English is the bridge language that lets a US/UK home feed surface us.</li>
+        <li>Formulas: spectacle/scale ("Cooking for 100 in the Village"), curiosity gap, ASMR tag.</li>
+        <li>Anchor on searched keywords: village / outdoor / open-fire / ASMR cooking + dish name.</li>
+        <li>Design thumbnail + title as one unit — they shouldn't repeat each other.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Retention is king</h3>
+  <p style="color:var(--muted);">Above 50% watched is strong, 70%+ exceptional. A 10-min video watched to 75% beats a 20-min one watched to 40%. Build a 3-second hook (fire lighting, knife on meat, the reveal), no slow intros, a satisfying payoff, and a "next dish" tease to extend session time. The 2026 algorithm surfaces small creators to specific viewer clusters ("outdoor cooking fans") — so a tight micro-niche is an advantage, not a limitation.</p>
+
+  <div class="grid two" style="margin-top:8px;">
+    <div class="card">
+      <h4 class="mt0">Wordless = global = more money</h4>
+      <p class="mb0" style="color:var(--muted);font-size:.93rem;">Language-free video is equally watchable in the US/UK/EU, pulling Tier-1 viewers worth 5–10× an Indian viewer. Add English captions, publish at US/EU evening so the first-hour test audience skews Western, and lean into universally craveable dishes (grilled meats, giant BBQ).</p>
+    </div>
+    <div class="card">
+      <h4 class="mt0">Shorts + long-form (70/30 early)</h4>
+      <p class="mb0" style="color:var(--muted);font-size:.93rem;">~74% of Shorts views are non-subscribers → fastest cold reach. A Short is a 15–45s teaser cut from the cook that funnels viewers to the long-form, where the watch time and Tier-1 ad money live. Run both; Shorts = top of funnel, long-form = the money.</p>
+    </div>
+  </div>
+
+  <h3>Cadence</h3>
+  <p style="color:var(--muted);">Minimum <strong>1 long-form/week, never missed</strong>, at a fixed slot (a fixed schedule drives ~67% faster sub growth than erratic posting) + <strong>3–5 Shorts/week</strong> cut from the same footage. Cross-post every Short to Instagram Reels, TikTok, and Facebook (native, no watermark), bio → YouTube.</p>
+
+  <div class="why"><b>First 90 days checklist</b>
+    <strong>Week 1:</strong> lock the micro-niche, English branding, thumbnail template, fixed weekly slot, link AdSense + 2-step verification. &nbsp;<strong>Weeks 1–12:</strong> every shoot = 1 long-form (12–20 min, wordless, strong ASMR) + 3–5 Shorts; English SEO titles + captions; cross-post everywhere. &nbsp;<strong>Optimize:</strong> track CTR (target 6%+) and AVD (target 50%+), cut intros where retention drops, double down fast on whatever dish spikes. &nbsp;<strong>Day-90 target:</strong> 12+ long-forms banking watch hours, 40–60 Shorts driving reach, trajectory toward 1,000 subs / 4,000 hours.</div>
+  <p class="src">Sources: <a href="https://likes.io/blog/youtube-algorithm-2026">Likes.io (algorithm 2026)</a>, <a href="https://miraflow.ai/blog/youtube-ctr-benchmarks-2026">miraflow (CTR)</a>, <a href="https://miraflow.ai/blog/youtube-shorts-vs-long-form-which-grows-channel-faster-2026">miraflow (Shorts vs long)</a>, <a href="https://vidiq.com/blog/post/How-Often-Post-on-Youtube/">vidIQ (cadence)</a>, <a href="https://gyre.pro/blog/the-rise-of-silent-vlogs-why-faceless-youtube-content-is-booming">Gyre (silent video)</a>.</p>
+</section>
+
+<!-- 07 -->
+<section id="money">
+  <span class="eyebrow">07 · The Money</span>
+  <h2>RPM, projections &amp; the revenue timeline</h2>
+  <p class="sec-intro">Pay is set by where the <strong>viewer</strong> sits, not where we film. An Indian creator making English content watched in the US earns the same $3–11 RPM as a Western creator. This is the entire reason for the global-audience strategy.</p>
+
+  <h3>What YouTube pays per 1,000 views (RPM) by audience country</h3>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Tier-1 (target)</th><th class="num">RPM</th><th>Tier-3</th><th class="num">RPM</th></tr></thead>
+      <tbody>
+        <tr><td>USA</td><td class="num em">$8–20+</td><td>India</td><td class="num">$0.80–3</td></tr>
+        <tr><td>UK</td><td class="num em">$7–16</td><td>Pakistan</td><td class="num">$0.50–2</td></tr>
+        <tr><td>Australia</td><td class="num em">$7–15</td><td>Indonesia</td><td class="num">$0.60–2.20</td></tr>
+        <tr><td>Canada</td><td class="num em">$6–14</td><td>Bangladesh</td><td class="num">$0.40–1.80</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Monthly ad revenue by view level &amp; audience mix</h3>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Monthly views</th><th class="num">India-heavy (~$1.10)</th><th class="num">Mixed global (~$2.50)</th><th class="num">Western-skewed (~$4.00)</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1M</td><td class="num">~$1,100</td><td class="num">~$2,500</td><td class="num em">~$4,000</td></tr>
+        <tr><td class="num">5M</td><td class="num">~$5,500</td><td class="num">~$12,500</td><td class="num em">~$20,000</td></tr>
+        <tr><td class="num">10M</td><td class="num">~$11,000</td><td class="num">~$25,000</td><td class="num em">~$40,000</td></tr>
+        <tr><td class="num">50M</td><td class="num">~$55,000</td><td class="num">~$125,000</td><td class="num em">~$200,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src mt0"><strong>Real anchor:</strong> Village Cooking Channel draws ~101M views/month at an India-heavy ~$1.10 RPM ≈ <strong>~$112K/month on ads alone</strong>, plus ₹11–34 lakh ($13K–41K) per sponsored video. Skewing our audience Western is what lifts that blended RPM.</p>
+
+  <h3>Realistic revenue timeline (channel that executes well)</h3>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Period</th><th>Milestone</th><th class="num">Subs</th><th class="num">Monthly income</th></tr></thead>
+      <tbody>
+        <tr><td>Months 0–6</td><td>Building library, not yet monetized</td><td class="num">0 → 3K</td><td class="num crit-t">$0</td></tr>
+        <tr><td>Months 6–12</td><td>Hit YPP (1K subs + 4K hrs); ads on</td><td class="num">3K–15K</td><td class="num">$150–1,500</td></tr>
+        <tr><td>Year 1–2</td><td>First paid sponsorships (~20K+ subs)</td><td class="num">20K–150K</td><td class="num">$1,500–12,000</td></tr>
+        <tr><td>Year 2–3</td><td>Multiple income streams stacked</td><td class="num">150K–1M</td><td class="num">$8,000–40,000</td></tr>
+        <tr><td>Year 3–5</td><td>Established mid-large channel</td><td class="num">1M–5M</td><td class="num em">$25,000–120,000</td></tr>
+        <tr><td>Year 5+</td><td>Breakout (rare — top of the niche)</td><td class="num">10M–30M</td><td class="num em">$80,000–150,000+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Beyond ads — where cooking channels really earn</h3>
+  <ul class="clean">
+    <li><strong>Sponsorships</strong> kick in around 20K–50K subs; cookware/spice/app deals run $500–$4,000 (mid-tier) up to ₹11–34 lakh/video at VCC scale — often out-earning ads.</li>
+    <li><strong>Affiliate</strong> (cookware, knives): $500–2,000/month at a mid-size channel.</li>
+    <li><strong>Merch:</strong> branded spice/masala kits, aprons, cookbook — a strong authentic angle, $1,000–5,000/month.</li>
+    <li><strong>Licensing:</strong> cinematic outdoor B-roll is licensable to media/stock; viral clips to aggregators.</li>
+  </ul>
+
+  <h3>Collecting it in USD — the US entity</h3>
+  <p style="color:var(--muted);">Filing a <strong>W-8BEN</strong> and claiming the US–India treaty drops US withholding from a possible <span class="crit-t">24% on total global earnings</span> to <strong>15% on only the US-viewer slice</strong> — a ~$540/month swing on a $1,200 US slice from one form. A foreign-owned single-member US LLC is a "disregarded entity" that lets us invoice/collect in USD and present a US face to sponsors (note: the W-8BEN's Line 1 is <em>your name</em>, not the LLC's). <span class="crit-t">Important:</span> this does not remove Indian tax obligations (GST / ITR) and needs a cross-border CPA to set up — the section below is general info, not legal or tax advice.</p>
+  <p class="src">Sources: <a href="https://fluxnote.io/guides/youtube-rpm-cooking-food-niche-2026">fluxnote (cooking RPM)</a>, <a href="https://incomefromviews.com/blog/youtube-rpm-by-country/">RPM by country</a>, <a href="https://www.networthspot.com/village-cooking-channel/net-worth/">NetWorthSpot (VCC)</a>, <a href="https://outlierkit.com/resources/youtube-sponsorship-rates/">OutlierKit (sponsorships)</a>, <a href="https://www.karboncard.com/blog/youtube-adsense-tax-withholding-india">Karbon (W-8BEN)</a>, <a href="https://support.google.com/youtube/answer/10391362">YouTube Help (US tax)</a>.</p>
+</section>
+
+<!-- 08 -->
+<section id="odds">
+  <span class="eyebrow">08 · Honest Odds</span>
+  <h2>The floor is brutal, the ceiling is enormous</h2>
+  <p class="sec-intro">We should walk in clear-eyed. This niche has a high failure rate driven by inconsistency — and one of the highest ceilings on the platform.</p>
+  <div class="stat-row">
+    <div class="stat"><span class="big num">~1 in 10</span><span class="lbl">Channels ever reach 1,000 subs</span></div>
+    <div class="stat"><span class="big num">~2.6%</span><span class="lbl">Of all channels are monetized</span></div>
+    <div class="stat"><span class="big num">6–12 mo</span><span class="lbl">To first ad dollar (if consistent)</span></div>
+    <div class="stat"><span class="big num">18–36 mo</span><span class="lbl">To meaningful ($2–3K/mo) income</span></div>
+  </div>
+  <div class="verdict">
+    <span class="vlabel">The verdict</span>
+    <h3>A brutal floor, an unusually high ceiling 🔥</h3>
+    <p>The failure rate is mostly a <strong>consistency and quality problem, not a luck problem</strong> — the channels that upload well for 6–12 months are the ones that clear the bar. Our edge: we already know the exact winning formula, we can start for under ₹5,000, and we're deliberately engineering for the global audience that pays 5–50× more.</p>
+    <p class="mb0"><strong>Outdoor/village cooking is one of the few genres where a single channel reaches 30M subs and ~$100K+/month on ads alone.</strong> The format travels globally, is language-light, and is evergreen. We treat this as a 12–24 month build, funded cheaply, aimed at that ceiling.</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="next">
+  <span class="eyebrow">09 · Next</span>
+  <h2>What we do first</h2>
+  <div class="grid two">
+    <div class="card"><h4 class="mt0">This week</h4><ul class="clean mb0">
+      <li>Cast the cook/host — the highest-stakes decision. Screen-test 2–3 candidates.</li>
+      <li>Lock the channel name + handle (lead option: <em>Himalaya Fire Kitchen</em>) and English branding.</li>
+      <li>Scout the first location (fire + water + forest/mountain in one frame).</li>
+      <li>Buy the Stage-0 kit (~₹2.5K): tripod, phone clamp, Boya BY-M1.</li>
+    </ul></div>
+    <div class="card"><h4 class="mt0">First month</h4><ul class="clean mb0">
+      <li>Shoot the whole-lamb hero video #1 in a batch of 3–4 videos, one location trip.</li>
+      <li>Edit #1 to a high bar (free DaVinci) — it sets the channel's ceiling.</li>
+      <li>Start the US LLC + AdSense (W-8BEN) with a CPA.</li>
+      <li>Publish 1 long-form/week + Shorts; begin the 90-day growth loop.</li>
+    </ul></div>
+  </div>
+  <p style="margin-top:18px;">Full launch detail — channel identity, format bible, the first 10 video concepts, crew workflow, and the 90-day roadmap — is in the <a href="index.html"><strong>Launch Playbook</strong></a>.</p>
+</section>
+
+<div class="foot">
+  <p class="mb0">Wilderness Cooking Channel — Business Report &amp; Production Bible, 2026. Figures are directional planning ranges compiled from public 2026 sources on Village Cooking Channel, Wilderness Cooking (Tavakkul), AlmazanKitchen, Aja Kitchen, Firoz Chuttipara and Primitive Technology, plus creator-analytics and monetization guides cited inline; actual results vary widely. Tax/entity notes are general information, not legal or tax advice — confirm with a cross-border CPA.</p>
+</div>
+
+</div>
+</body>
+</html>
